@@ -1,0 +1,30 @@
+.product {
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-height: 300px;
+    gap: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: scale 0.3s ease;
+}
+.product:hover {
+    scale: 1.05;
+    cursor: pointer;
+}
+.priceAndCategory {
+    display: flex;
+    flex-direction: column;
+}
+.price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+.description {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}

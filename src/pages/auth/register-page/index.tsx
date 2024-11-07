@@ -1,15 +1,18 @@
 import styles from '../styles.module.css';
-import { Button, DatePicker, Input, Select } from 'antd';
+import { App, Button, DatePicker, Input, Select } from 'antd';
 import { Dayjs } from 'dayjs';
 import { useMemo, useState } from 'react';
 import { Auth } from '../../../entities/api/auth';
 import { routes } from '../../../app/router/routes.ts';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../../entities/api/user';
+import { useAppStore } from '../../../entities/store';
 
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
+  const { message } = App.useApp();
 
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -17,8 +20,11 @@ export const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState<'Male' | 'Female' | undefined>();
   const [birthDate, setBirthDate] = useState<Dayjs | undefined>();
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const setUserData = useAppStore((state) => state.setUserData);
+  const setIsAdmin = useAppStore((state) => state.setIsAdmin);
+  const setIsLoggedIn = useAppStore((state) => state.setIsLoggedIn);
 
   const registerHandler = async () => {
     if (!gender || !birthDate) return;
@@ -32,6 +38,18 @@ export const RegisterPage = () => {
         lastname,
         password,
       });
+      setIsLoggedIn(true);
+
+      const data = await User.me();
+      setUserData(data);
+
+      const isAdmin = data.role.name === 'ADMIN';
+      if (isAdmin) {
+        setIsAdmin(true);
+      }
+
+      message.success('Successfully registered');
+      navigate(routes.products);
     } catch (e) {
       console.error(e);
     } finally {

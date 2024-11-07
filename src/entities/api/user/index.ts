@@ -3,6 +3,7 @@ import {
   GetUserByIdResponseType,
   UpdateUserRequestType,
   UpdateUserResponseType,
+  UserType,
 } from './types.ts';
 import { Api } from '../index.ts';
 
@@ -27,6 +28,11 @@ export class User {
 
   public static async adminGetAllUsers() {
     const response = await Api.axios.get<GetAllUsersResponseType>('user');
+    return response.data;
+  }
+
+  public static async me() {
+    const response = await Api.axios.get<UserType>('user/me');
     return response.data;
   }
 }

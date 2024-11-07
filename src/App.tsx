@@ -6,8 +6,10 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { routes, routesLabels } from './app/router/routes.ts';
+import { useAppStore } from './entities/store';
+import { CartLocalStorageManager } from './entities/local-storage';
 
 const { Header, Content, Footer } = Layout;
 
@@ -18,6 +20,10 @@ function App() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const setCart = useAppStore((state) => state.setCart);
+  const user = useAppStore((state) => state.userData);
+  const isAdmin = useAppStore((state) => state.isAdmin);
 
   const isAuthPage = useMemo(() => {
     return location.pathname === '/login' || location.pathname === '/register';
@@ -49,6 +55,19 @@ function App() {
     });
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (user) {
+      const cartFromLS = CartLocalStorageManager.get();
+
+      const userCart = cartFromLS.find((item) => item.userId === user.id);
+
+      if (userCart) {
+        const cartData = userCart.data;
+        setCart(cartData);
+      }
+    }
+  }, [setCart, user]);
+
   const navigateTo: MenuProps['onClick'] = (e) => {
     navigate(e.key);
   };
@@ -62,16 +81,30 @@ function App() {
           mode="horizontal"
           multiple={true}
           selectedKeys={[location.pathname]}
-          items={[
-            {
-              label: 'Продукты',
-              key: routes.products,
-            },
-            { label: 'Заказы', key: '/orders' },
-            { label: 'Категории', key: '/categories' },
-          ]}
+          items={
+            isAdmin
+              ? [
+                  {
+                    label: 'Products',
+                    key: routes.products,
+                  },
+                  { label: 'Orders', key: routes.orders },
+                  { label: 'Categories', key: routes.categories },
+                ]
+              : [
+                  {
+                    label: 'Products',
+                    key: routes.products,
+                  },
+                ]
+          }
           style={{ flex: 1, minWidth: 0 }}
         />
+        {user && (
+          <div className={styles.userInfo}>
+            {user.firstname} {user.lastname}
+          </div>
+        )}
       </Header>
       <Content style={{ padding: '0 48px' }}>
         <Breadcrumb style={{ margin: '16px 0' }} items={breadcrumbs} />
