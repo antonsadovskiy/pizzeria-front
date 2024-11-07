@@ -10,8 +10,8 @@ import { PrivateRoutes } from './private-routes.tsx';
 import { LoginPage } from '../../pages/auth/login-page';
 import { ProductsPage } from '../../pages/products-page';
 import { RegisterPage } from '../../pages/auth/register-page';
-import { ProductPage } from '../../pages/product-page';
 import { AddProductPage } from '../../pages/add-product-page';
+import { OrdersPage } from '../../pages/orders-page';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,8 +31,8 @@ export const router = createBrowserRouter(
         {/*<Route path={routes.adminEditVoyage} element={<EditVoyagePage />} />*/}
 
         <Route path={routes.products} element={<ProductsPage />} />
-        <Route path={routes.product} element={<ProductPage />} />
         <Route path={routes.addProduct} element={<AddProductPage />} />
+        <Route path={routes.orders} element={<OrdersPage />} />
         {/*<Route path={routes.editUser} element={<EditUserPage />} />*/}
         {/*<Route path={routes.myTickets} element={<MyTicketsPage />} />*/}
       </Route>

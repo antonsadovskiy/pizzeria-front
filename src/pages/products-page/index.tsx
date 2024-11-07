@@ -11,22 +11,20 @@ export const ProductsPage = () => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState<ProductType[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
 
   const addProductHandler = () => navigate(routes.addProduct);
 
+  const fetchData = async () => {
+    try {
+      const data = await Product.getAllProducts();
+
+      setProducts(data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // setIsLoading(true);
-        const data = await Product.getAllProducts();
-
-        setProducts(data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -34,7 +32,7 @@ export const ProductsPage = () => {
     <div className={styles.page}>
       <div className={styles.list}>
         {products.map((item, index) => (
-          <ProductItem key={index} {...item} />
+          <ProductItem key={index} {...item} refetchData={fetchData} />
         ))}
       </div>
       <div className={styles.addProduct}>

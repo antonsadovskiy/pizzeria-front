@@ -40,11 +40,12 @@ export const createUserSlice: StateCreator<
   UserSliceType
 > = (set) => ({
   isLoggedIn: false,
-  setIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
   isAdmin: true,
+  userData: undefined,
+  cart: [],
+  setIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
   setIsAdmin: (isAdmin) => set(() => ({ isAdmin })),
   setUserData: (userData) => set(() => ({ userData })),
-  cart: [],
   addToCart: (orderItem) =>
     set((state) => ({ cart: [...state.cart, orderItem] })),
   editOrderItemQuantity: (id, quantity) =>
