@@ -3,9 +3,10 @@ import { ProductType } from '../../entities/api/product/types.ts';
 import { Product } from '../../entities/api/product';
 import styles from './styles.module.css';
 import { ProductItem } from './components/product-item';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../app/router/routes.ts';
+import { AxiosError } from 'axios';
 
 export const ProductsPage = () => {
   const navigate = useNavigate();
@@ -20,7 +21,9 @@ export const ProductsPage = () => {
 
       setProducts(data);
     } catch (e) {
-      console.error(e);
+      if (e instanceof AxiosError) {
+        message.error(e.message);
+      }
     }
   };
 

@@ -46,7 +46,7 @@ export class Order {
     return response.data;
   }
 
-  public static async adminCreateOrder(data: CreateOrderRequestType) {
+  public static async createOrder(data: CreateOrderRequestType) {
     const response = await Api.axios.post<CreateOrderResponseType>(
       'order',
       data,

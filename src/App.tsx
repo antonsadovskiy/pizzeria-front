@@ -96,6 +96,7 @@ function App() {
                     label: 'Products',
                     key: routes.products,
                   },
+                  { label: 'Cart', key: routes.cart },
                 ]
           }
           style={{ flex: 1, minWidth: 0 }}

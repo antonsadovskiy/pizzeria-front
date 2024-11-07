@@ -4,11 +4,6 @@ type OrderItemPropsType = OrderType & {
   refetchData: () => void;
 };
 
-export const OrderItem = ({
-  orderItems,
-  refetchData,
-  id,
-  status,
-}: OrderItemPropsType) => {
+export const OrderItem = ({ id }: OrderItemPropsType) => {
   return <div>{id}</div>;
 };

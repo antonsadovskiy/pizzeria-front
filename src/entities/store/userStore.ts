@@ -28,7 +28,9 @@ type ActionsType = {
   setIsAdmin: (isAdmin: boolean) => void;
   setCart: (cart: OrderItemType[]) => void;
   addToCart: (orderItem: OrderItemType) => void;
-  editOrderItemQuantity: (id: number, quantity: number) => void;
+  removeFromCart: (id: number) => void;
+  decreaseOrderItemQuantity: (id: number) => void;
+  increaseOrderItemQuantity: (id: number) => void;
 };
 
 export type UserSliceType = StateType & ActionsType;
@@ -40,7 +42,7 @@ export const createUserSlice: StateCreator<
   UserSliceType
 > = (set) => ({
   isLoggedIn: false,
-  isAdmin: true,
+  isAdmin: false,
   userData: undefined,
   cart: [],
   setIsLoggedIn: (isLoggedIn) => set(() => ({ isLoggedIn })),
@@ -48,13 +50,25 @@ export const createUserSlice: StateCreator<
   setUserData: (userData) => set(() => ({ userData })),
   addToCart: (orderItem) =>
     set((state) => ({ cart: [...state.cart, orderItem] })),
-  editOrderItemQuantity: (id, quantity) =>
-    set((state) => {
-      const index = state.cart.findIndex((item) => item.product.id === id);
-      if (index !== -1) {
-        state.cart[index].quantity = quantity;
-      }
-      return state;
-    }),
+  removeFromCart: (id) =>
+    set((state) => ({
+      cart: state.cart.filter((item) => item.product.id !== id),
+    })),
+  increaseOrderItemQuantity: (id) =>
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.product.id === id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
+    })),
+  decreaseOrderItemQuantity: (id) =>
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.product.id === id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
+    })),
   setCart: (cart) => set(() => ({ cart })),
 });

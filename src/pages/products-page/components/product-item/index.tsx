@@ -1,11 +1,13 @@
 import { ProductType } from '../../../../entities/api/product/types.ts';
 
 import styles from './styles.module.css';
-import { Button, Typography } from 'antd';
+import { Button, message, Typography } from 'antd';
 import { useAppStore } from '../../../../entities/store';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../../app/router/routes.ts';
+import { Product } from '../../../../entities/api/product';
+import { AxiosError } from 'axios';
 
 export const ProductItem = ({
   id,
@@ -13,11 +15,15 @@ export const ProductItem = ({
   price,
   category,
   description,
-}: ProductType) => {
+  refetchData,
+}: ProductType & { refetchData: () => void }) => {
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const addToCart = useAppStore((state) => state.addToCart);
   const cart = useAppStore((state) => state.cart);
+  const isAdmin = useAppStore((state) => state.isAdmin);
 
   const isInCart = useMemo(() => {
     return cart.some((item) => item.product.id === id);
@@ -30,7 +36,26 @@ export const ProductItem = ({
     });
   };
 
-  const goToCardHandler = () => navigate(routes.categories);
+  const updateNavigate = () => navigate(`/products/update-product/${id}`);
+
+  const goToCardHandler = () => navigate(routes.cart);
+
+  const deleteProductHandler = async () => {
+    try {
+      setIsLoading(true);
+      await Product.adminDeleteProduct(id);
+
+      message.success('Product deleted');
+
+      refetchData();
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        message.error(e.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className={styles.product}>
@@ -47,13 +72,29 @@ export const ProductItem = ({
             {price}$
           </Typography.Title>
         </div>
-        {isInCart ? (
-          <Button onClick={goToCardHandler}>Go to cart</Button>
-        ) : (
-          <Button type={'primary'} onClick={addToCartHandler}>
-            Order
-          </Button>
-        )}
+        <div className={styles.buttons}>
+          {!isAdmin &&
+            (isInCart ? (
+              <Button onClick={goToCardHandler}>Go to cart</Button>
+            ) : (
+              <Button type={'primary'} onClick={addToCartHandler}>
+                Order
+              </Button>
+            ))}
+          {isAdmin && (
+            <>
+              <Button onClick={updateNavigate}>Update product data</Button>
+              <Button
+                loading={isLoading}
+                onClick={deleteProductHandler}
+                type={'primary'}
+                danger
+              >
+                Delete
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

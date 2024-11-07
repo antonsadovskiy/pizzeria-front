@@ -3,6 +3,8 @@ import styles from '../products-page/styles.module.css';
 import { Order } from '../../entities/api/order';
 import { OrderType } from '../../entities/api/order/types.ts';
 import { OrderItem } from './components/order-item';
+import { AxiosError } from 'axios';
+import { message } from 'antd';
 
 export const OrdersPage = () => {
   const [orders, setOrders] = useState<OrderType[]>([]);
@@ -13,7 +15,9 @@ export const OrdersPage = () => {
 
       setOrders(data);
     } catch (e) {
-      console.error(e);
+      if (e instanceof AxiosError) {
+        message.error(e.message);
+      }
     }
   };
 

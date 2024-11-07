@@ -12,6 +12,9 @@ import { ProductsPage } from '../../pages/products-page';
 import { RegisterPage } from '../../pages/auth/register-page';
 import { AddProductPage } from '../../pages/add-product-page';
 import { OrdersPage } from '../../pages/orders-page';
+import { CategoriesPage } from '../../pages/categories-page';
+import { UpdateProductPage } from '../../pages/update-product-page';
+import { CartPage } from '../../pages/cart-page';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,7 +35,10 @@ export const router = createBrowserRouter(
 
         <Route path={routes.products} element={<ProductsPage />} />
         <Route path={routes.addProduct} element={<AddProductPage />} />
+        <Route path={routes.updateProduct} element={<UpdateProductPage />} />
         <Route path={routes.orders} element={<OrdersPage />} />
+        <Route path={routes.categories} element={<CategoriesPage />} />
+        <Route path={routes.cart} element={<CartPage />} />
         {/*<Route path={routes.editUser} element={<EditUserPage />} />*/}
         {/*<Route path={routes.myTickets} element={<MyTicketsPage />} />*/}
       </Route>

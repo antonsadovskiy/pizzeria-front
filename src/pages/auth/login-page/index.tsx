@@ -1,17 +1,16 @@
 import styles from '../styles.module.css';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { App, Button, Input } from 'antd';
+import { Button, Input, message } from 'antd';
 import { useMemo, useState } from 'react';
 import { Auth } from '../../../entities/api/auth';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../app/router/routes.ts';
 import { User } from '../../../entities/api/user';
 import { useAppStore } from '../../../entities/store';
+import { AxiosError } from 'axios';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { message } = App.useApp();
-
   const [login, setLogin] = useState('antonsadovskiy6@gmail.com');
   const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
@@ -42,7 +41,9 @@ export const LoginPage = () => {
       message.success('Successfully logged in');
       navigate(routes.products);
     } catch (e) {
-      console.error(e);
+      if (e instanceof AxiosError) {
+        message.error(e.message);
+      }
     } finally {
       setLoading(false);
     }

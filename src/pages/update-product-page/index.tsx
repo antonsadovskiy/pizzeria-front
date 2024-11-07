@@ -4,10 +4,12 @@ import styles from './styles.module.css';
 import { Button, Input, message, Select } from 'antd';
 import { Category } from '../../entities/api/category';
 import { Product } from '../../entities/api/product';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
-export const AddProductPage = () => {
+export const UpdateProductPage = () => {
+  const params = useParams<{ id: string }>();
+
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -36,6 +38,12 @@ export const AddProductPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const productData = await Product.getProductById(Number(params.id));
+        setName(productData.name);
+        setCategory(productData.category);
+        setDescription(productData.description);
+        setPrice(productData.price);
+
         const data = await Category.getAllCategories();
         setAllCategories(data);
       } catch (e) {
@@ -48,20 +56,25 @@ export const AddProductPage = () => {
     fetchData();
   }, []);
 
-  const addProductHandler = async () => {
-    try {
-      if (!category || !price) return;
-
-      setIsLoading(true);
-      await Product.adminCreateProduct({ name, price, category, description });
-      message.success('Product added');
-      navigate(-1);
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        message.error(e.message);
+  const updateProductHandler = async () => {
+    if (params.id && price && category) {
+      try {
+        setIsLoading(true);
+        await Product.adminUpdateProduct(Number(params.id), {
+          name,
+          price,
+          category,
+          description,
+        });
+        message.success('Product added');
+        navigate(-1);
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          message.error(e.message);
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -99,12 +112,12 @@ export const AddProductPage = () => {
       />
       <Button
         loading={isLoading}
-        onClick={addProductHandler}
+        onClick={updateProductHandler}
         disabled={isButtonDisabled}
         style={{ width: '100%' }}
         type={'primary'}
       >
-        Add product
+        Update product
       </Button>
     </div>
   );

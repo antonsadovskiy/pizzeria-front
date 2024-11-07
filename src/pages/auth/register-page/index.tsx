@@ -1,5 +1,5 @@
 import styles from '../styles.module.css';
-import { App, Button, DatePicker, Input, Select } from 'antd';
+import { Button, DatePicker, Input, message, Select } from 'antd';
 import { Dayjs } from 'dayjs';
 import { useMemo, useState } from 'react';
 import { Auth } from '../../../entities/api/auth';
@@ -7,12 +7,12 @@ import { routes } from '../../../app/router/routes.ts';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../../entities/api/user';
 import { useAppStore } from '../../../entities/store';
+import { AxiosError } from 'axios';
 
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const { message } = App.useApp();
 
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -51,7 +51,9 @@ export const RegisterPage = () => {
       message.success('Successfully registered');
       navigate(routes.products);
     } catch (e) {
-      console.error(e);
+      if (e instanceof AxiosError) {
+        message.error(e.message);
+      }
     } finally {
       setIsLoading(false);
     }
