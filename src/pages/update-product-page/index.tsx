@@ -66,7 +66,7 @@ export const UpdateProductPage = () => {
           category,
           description,
         });
-        message.success('Product added');
+        message.success('Product updated');
         navigate(-1);
       } catch (e) {
         if (e instanceof AxiosError) {
