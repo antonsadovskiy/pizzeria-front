@@ -30,7 +30,7 @@ export const CartPage = () => {
 
   return (
     <div className={styles.page}>
-      <List>
+      <List className={styles.list}>
         {cart.map((item) => (
           <List.Item key={item.product.id} className={styles.item}>
             <div className={styles.name}>
