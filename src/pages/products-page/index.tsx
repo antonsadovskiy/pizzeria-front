@@ -7,9 +7,12 @@ import { Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../app/router/routes.ts';
 import { AxiosError } from 'axios';
+import { useAppStore } from '../../entities/store';
 
 export const ProductsPage = () => {
   const navigate = useNavigate();
+
+  const isAdmin = useAppStore((state) => state.isAdmin);
 
   const [products, setProducts] = useState<ProductType[]>([]);
 
@@ -38,9 +41,11 @@ export const ProductsPage = () => {
           <ProductItem key={index} {...item} refetchData={fetchData} />
         ))}
       </div>
-      <div className={styles.addProduct}>
-        <Button onClick={addProductHandler}>Add product</Button>
-      </div>
+      {isAdmin && (
+        <div className={styles.addProduct}>
+          <Button onClick={addProductHandler}>Add product</Button>
+        </div>
+      )}
     </div>
   );
 };

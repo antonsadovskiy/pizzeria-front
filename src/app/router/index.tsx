@@ -15,6 +15,8 @@ import { OrdersPage } from '../../pages/orders-page';
 import { CategoriesPage } from '../../pages/categories-page';
 import { UpdateProductPage } from '../../pages/update-product-page';
 import { CartPage } from '../../pages/cart-page';
+import { UsersPage } from '../../pages/users-page';
+import { ProfilePage } from '../../pages/profile-page';
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,22 +27,14 @@ export const router = createBrowserRouter(
       <Route path={routes.register} element={<RegisterPage />} />
 
       <Route element={<PrivateRoutes />}>
-        {/*<Route path={routes.admin} element={<AdminPage />} />*/}
-        {/*<Route path={routes.adminAddTrain} element={<AddNewTrainPage />} />*/}
-        {/*<Route path={routes.adminEditTrain} element={<EditTrainPage />} />*/}
-        {/*<Route path={routes.adminAddRoute} element={<AddNewRoutePage />} />*/}
-        {/*<Route path={routes.adminEditRoute} element={<EditRoutePage />} />*/}
-        {/*<Route path={routes.adminAddVoyage} element={<AddNewVoyagePage />} />*/}
-        {/*<Route path={routes.adminEditVoyage} element={<EditVoyagePage />} />*/}
-
         <Route path={routes.products} element={<ProductsPage />} />
         <Route path={routes.addProduct} element={<AddProductPage />} />
         <Route path={routes.updateProduct} element={<UpdateProductPage />} />
         <Route path={routes.orders} element={<OrdersPage />} />
         <Route path={routes.categories} element={<CategoriesPage />} />
         <Route path={routes.cart} element={<CartPage />} />
-        {/*<Route path={routes.editUser} element={<EditUserPage />} />*/}
-        {/*<Route path={routes.myTickets} element={<MyTicketsPage />} />*/}
+        <Route path={routes.users} element={<UsersPage />} />
+        <Route path={routes.profile} element={<ProfilePage />} />
       </Route>
     </Route>,
   ),

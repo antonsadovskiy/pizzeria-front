@@ -19,6 +19,7 @@ export type UpdateUserRequestType = {
   lastname: string;
   email: string;
   gender: 'Male' | 'Female';
+  password: string;
   birthDate: string;
 };
 export type UpdateUserResponseType = UserType;

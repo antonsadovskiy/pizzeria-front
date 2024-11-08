@@ -8,6 +8,8 @@ export const routes = {
   categories: '/categories',
   login: '/login',
   register: '/register',
+  users: '/users',
+  profile: '/profile',
 };
 
 export const routesLabels = {
@@ -17,4 +19,6 @@ export const routesLabels = {
   ['add-new-product']: 'Add new product',
   ['update-product']: 'Update product',
   ['cart']: 'Cart',
+  ['users']: 'Users',
+  ['profile']: 'Profile',
 };

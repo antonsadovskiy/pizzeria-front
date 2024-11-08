@@ -72,6 +72,8 @@ function App() {
     navigate(e.key);
   };
 
+  const navigateToProfile = () => navigate(routes.profile);
+
   return (
     <Layout>
       <Header className={`${styles.header} ${isAuthPage && styles.disabled}`}>
@@ -90,6 +92,7 @@ function App() {
                   },
                   { label: 'Orders', key: routes.orders },
                   { label: 'Categories', key: routes.categories },
+                  { label: 'Users', key: routes.users },
                 ]
               : [
                   {
@@ -102,7 +105,7 @@ function App() {
           style={{ flex: 1, minWidth: 0 }}
         />
         {user && (
-          <div className={styles.userInfo}>
+          <div onClick={navigateToProfile} className={styles.userInfo}>
             {user.firstname} {user.lastname}
           </div>
         )}
