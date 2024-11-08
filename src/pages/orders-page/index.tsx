@@ -37,21 +37,6 @@ const expandColumns: TableColumnsType<OrderItemType> = [
     dataIndex: 'quantity',
     key: 'quantity',
   },
-  /*{
-    title: 'Action',
-    key: 'operation',
-    render: () => (
-      <Space size="middle">
-        <a>Pause</a>
-        <a>Stop</a>
-        <Dropdown menu={{ items }}>
-          <a>
-            More <DownOutlined />
-          </a>
-        </Dropdown>
-      </Space>
-    ),
-  },*/
 ];
 
 const orderStatuses: { label: string; value: StatusType }[] = [
@@ -141,6 +126,7 @@ export const OrdersPage = () => {
       key: 'status',
       render: (value, record) => (
         <Select
+          disabled={value === 'COMPLETED' || value === 'CANCELLED'}
           options={orderStatuses}
           onChange={(value) => onChangeOrderStatus(record.id, value)}
           value={value}
